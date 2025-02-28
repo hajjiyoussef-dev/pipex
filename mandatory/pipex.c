@@ -6,45 +6,75 @@
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 19:31:20 by yhajji            #+#    #+#             */
-/*   Updated: 2025/02/24 18:39:01 by yhajji           ###   ########.fr       */
+/*   Updated: 2025/02/28 22:40:27 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
 
-
-int main()
+void ft_process_child(char **argv, char **ev, int *fds)
 {
-    pid_t pip;
+    int in;
 
-    pip = fork();
+    in  = open(argv[1], O_RDONLY);
+    
+    if (in == -1)
+        ft_error("Error, can not read from this file");
+    dup2(in, STDIN_FILENO);
+    dup2(fds[1], STDOUT_FILENO);
 
-    if (pip == -1)
-    {
-        printf("error ");
-        return (1);
-    }
-
-    if (pip == 0)
-    {
-        printf("Child process: PID = %d, Parent PID = %d\n", getpid(), getppid());
-    }
-    else
-    {
-         printf("Parent process: PID = %d, Child PID = %d\n", getpid(), pip)  ; 
-    }
-
-    return (0);
+    close(in);
+    close(fds[0]);
+    close(fds[1]);
+    ft_execute_cmd(argv[2], ev);
+    ft_error("Error: filed in the execute parte");
 }
 
-// int main(int argc, char **argv)
-// {
-//     int in;
-//     int out; 
+void ft_process_parent(char **argv, char **ev, int *fds)
+{
+    int  out;
 
-//     if (argc == 5)
-//     {
+    out = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC);
+    if (out == -1)
+        ft_error("Error: filed to open file");
+    dup2(fds[0], STDIN_FILENO);
+    dup2(out, STDOUT_FILENO);
+
+    close(out);
+    close(fds[1]);
+    close(fds[0]);
+    ft_execute_cmd(argv[3], ev);
+    ft_error("Error: filed in the execute parte ");
+}
+
+
+int main(int argc, char **argv, char **ev)
+{
+    int fds[2];
+
+    pid_t pro_id1;
+    pid_t pro_id2;
+    if (argc == 5)
+    {
+        if(pipe(fds) == -1)
+            ft_error("error in pipe");
+        pro_id1 = fork();
+        if (pro_id1 == -1)
+            ft_error("error in fork");
+        if (pro_id1 == 0)
+            ft_process_child(argv, ev, fds);
+        pro_id2 = fork();
+        if (pro_id2 == -1)
+            ft_error("error in the fork");
+        if (pro_id2 == 0)
+            ft_process_parent(argv, ev, fds);
+        close(fds[0]);
+        close(fds[1]);           
+    }
+    else 
+    {
         
-//     }
-// }
+    }
+    return (0);
+}
