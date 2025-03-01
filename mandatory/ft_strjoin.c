@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_help.c                               :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/27 15:04:04 by yhajji            #+#    #+#             */
-/*   Updated: 2025/02/28 22:52:17 by yhajji           ###   ########.fr       */
+/*   Created: 2025/03/01 15:29:00 by yhajji            #+#    #+#             */
+/*   Updated: 2025/03/01 15:29:03 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,25 +45,6 @@ char	*ft_strdup(const char *s1)
 	}
 	ptr[i] = '\0';
 	return (ptr);
-}
-
-void	*ft_memcpy(void *dest, const void *src, size_t n)
-{
-	unsigned char	*d;
-	unsigned char	*s;
-	size_t			i;
-
-	i = 0;
-	if (!dest || !src)
-		return (NULL);
-	d = (unsigned char *)dest;
-	s = (unsigned char *)src;
-	while (i < n)
-	{
-		d[i] = s[i];
-		i++;
-	}
-	return (dest);
 }
 
 char	*ft_strjoin(char *s1, char *s2)

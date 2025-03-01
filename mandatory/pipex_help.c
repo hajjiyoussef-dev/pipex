@@ -6,7 +6,7 @@
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 15:04:47 by yhajji            #+#    #+#             */
-/*   Updated: 2025/02/28 22:42:52 by yhajji           ###   ########.fr       */
+/*   Updated: 2025/03/01 17:24:28 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char *get_cmd_path(char *cmd, char **ev)
     char *real_path;
     
     i = 0;
-    while (ev[i] && ft_strnstr(ev[i], "PATH", 4) == 0)
+    while (ev[i] && ft_strnstr(ev[i], "PATH=", 5) == NULL)
         i++;
     if (!ev[i])
         return (NULL);
@@ -52,8 +52,8 @@ char *get_cmd_path(char *cmd, char **ev)
     while (paths[i])
     {
         part_path = ft_strjoin(paths[i], "/");
-        free(part_path);
         real_path = ft_strjoin(part_path, cmd);
+        free(part_path);
         if (access(real_path, F_OK | R_OK) == 0)
         {
               i = 0;
@@ -63,7 +63,8 @@ char *get_cmd_path(char *cmd, char **ev)
                 i++;
               }
               free(paths);
-              return(real_path);
+              printf("%s", real_path);
+              return (real_path);
         }
         free(real_path);
         i++;
@@ -87,13 +88,11 @@ void ft_execute_cmd(char *argv, char **ev)
     i = 0;
     cmd = ft_split(argv, ' ');
     path = get_cmd_path(cmd[0], ev);
-
     if (!path)
     {
         while (cmd[i])
             free(cmd[i++]);
         free(cmd);
-        
         ft_error("Error: cmd not found!!! ");
     }
     if (execve(path, cmd, ev) == -1)

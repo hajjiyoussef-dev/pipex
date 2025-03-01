@@ -1,6 +1,6 @@
 NAME = pipex
 
-SRC = ./mandatory/ft_error.c ./mandatory/ft_split.c ./mandatory/get_next_line.c ./mandatory/get_next_line_help.c \
+SRC = ./mandatory/ft_error.c ./mandatory/ft_split.c ./mandatory/ft_strjoin.c \
 		./mandatory/pipex.c ./mandatory/pipex_help.c 
 
 OBJS = ${SRC:.c=.o} 

@@ -6,7 +6,7 @@
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 19:31:20 by yhajji            #+#    #+#             */
-/*   Updated: 2025/02/28 22:40:27 by yhajji           ###   ########.fr       */
+/*   Updated: 2025/03/01 17:35:40 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void ft_process_parent(char **argv, char **ev, int *fds)
 {
     int  out;
 
-    out = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC);
+    out = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
     if (out == -1)
         ft_error("Error: filed to open file");
     dup2(fds[0], STDIN_FILENO);
@@ -74,7 +74,8 @@ int main(int argc, char **argv, char **ev)
     }
     else 
     {
-        
+        ft_error("Error: Bad arguments\n\
+        Ex: ./pipex <file1> <cmd1> <cmd2> <file2>");
     }
     return (0);
 }
