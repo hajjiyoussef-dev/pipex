@@ -1,35 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   ft_error_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/21 19:31:33 by yhajji            #+#    #+#             */
-/*   Updated: 2025/03/02 17:09:29 by yhajji           ###   ########.fr       */
+/*   Created: 2025/03/02 23:22:16 by yhajji            #+#    #+#             */
+/*   Updated: 2025/03/02 23:23:24 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-#define PIPEX_H
-
-// delete ???
-#include <stdio.h>
-
-#include <unistd.h>
-#include <stdlib.h>
-#include <fcntl.h>
+#include "pipex_bonus.h"
 
 
-void ft_error(char *str);
-char	**ft_split(char const *s, char c);
+void ft_error(char *str)
+{
+    int i;
 
-char	*ft_strjoin(char *s1, char *s2);
-size_t	ft_strlen(const char *s);
-char	*ft_strdup(const char *s1);
-
-
-void ft_execute_cmd(char *argv, char **ev);
-
-
-#endif 
+    i = 0;
+    while (str[i] != '\0')
+    {
+        write(1, &str[i], 1);
+        i++;
+    }
+    exit(1);
+}

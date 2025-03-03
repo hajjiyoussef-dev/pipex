@@ -6,7 +6,7 @@
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 19:31:20 by yhajji            #+#    #+#             */
-/*   Updated: 2025/03/01 17:35:40 by yhajji           ###   ########.fr       */
+/*   Updated: 2025/03/02 23:21:28 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ void ft_process_parent(char **argv, char **ev, int *fds)
 int main(int argc, char **argv, char **ev)
 {
     int fds[2];
-
     pid_t pro_id1;
     pid_t pro_id2;
+
     if (argc == 5)
     {
         if(pipe(fds) == -1)
