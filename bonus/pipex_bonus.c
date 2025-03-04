@@ -6,13 +6,45 @@
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 19:31:06 by yhajji            #+#    #+#             */
-/*   Updated: 2025/03/03 02:38:41 by yhajji           ###   ########.fr       */
+/*   Updated: 2025/03/04 02:58:40 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
 
+int ft_open_files(char *argv, int i)
+{
+    int file_open;
+    
+    if (i == 0)
+        file_open = open(argv, O_RDONLY | O_CREAT | O_APPEND, 0644);
+    else if (i == 1)
+        file_open = open(argv, O_RDONLY | O_CREAT | O_TRUNC, 0644);
+    else if (i == 2)
+        file_open = open(argv, O_RDONLY, 0644);
+    else 
+        return (-1);
+    if (file_open == -1)
+        ft_error("Error: filed to open file");
+    return (file_open);
+}
+
+int	ft_strncmp(const char *s1, const char *s2, unsigned int n)
+{
+	unsigned int	i;
+
+	i = 0;
+	if (n == 0)
+	{
+		return (0);
+	}
+	while (s1[i] && s2[i] && (s1[i] == s2[i]) && i < (n - 1))
+	{
+		i++;
+	}
+	return ((unsigned char )s1[i] - (unsigned char)s2[i]);
+}
 
 
 void ft_child_process(char *argv, char **ev)

@@ -6,7 +6,7 @@
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 19:31:21 by yhajji            #+#    #+#             */
-/*   Updated: 2025/03/03 17:41:10 by yhajji           ###   ########.fr       */
+/*   Updated: 2025/03/04 02:58:58 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 #include <limits.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <sys/wait.h>
 
 
 void ft_error(char *str);
@@ -32,6 +33,10 @@ char	*get_next_line(int fd);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strdup(const char *s1);
 void	*ft_memcpy(void *dest, const void *src, size_t n);
+int	ft_strncmp(const char *s1, const char *s2, unsigned int n);
+char	**ft_split(char const *s, char c);
+size_t	ft_strlen(const char *s);
+void here_doc(char *argv, int argc);
 
 
 #endif

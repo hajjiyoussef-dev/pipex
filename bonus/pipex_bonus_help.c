@@ -6,12 +6,11 @@
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 23:16:22 by yhajji            #+#    #+#             */
-/*   Updated: 2025/03/03 03:15:15 by yhajji           ###   ########.fr       */
+/*   Updated: 2025/03/04 02:41:02 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
-
 
 
 void here_doc(char *argv, int argc)
@@ -31,14 +30,29 @@ void here_doc(char *argv, int argc)
     if (pro_id == 0)
     {
         close(fds[0]);
-        while (get_next_line(&line))
+        while ((line = get_next_line(STDIN_FILENO)))
         {
-            /* code */
+            if(ft_strncmp(line, argv, ft_strlen(argv)) == 0 && line[ft_strlen(argv)] == '\n')
+            {
+                free(line);
+                break;
+            }
+            write(fds[1], line, ft_strlen(line));
+            write(fds[1], "\n", 1);
+            free(line);
         }
-        
-    }    
-    
+        close(fds[1]);
+        exit(0);
+    }
+    else
+    {
+        close(fds[1]);
+        dup2(fds[0], STDIN_FILENO);
+        close(fds[0]);
+        waitpid(pro_id, NULL, 0);
+    }
 }
+
 
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
