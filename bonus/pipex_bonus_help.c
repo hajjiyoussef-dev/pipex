@@ -6,7 +6,7 @@
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 23:16:22 by yhajji            #+#    #+#             */
-/*   Updated: 2025/03/04 02:41:02 by yhajji           ###   ########.fr       */
+/*   Updated: 2025/03/05 02:58:37 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void here_doc(char *argv, int argc)
                 break;
             }
             write(fds[1], line, ft_strlen(line));
-            write(fds[1], "\n", 1);
             free(line);
         }
         close(fds[1]);
@@ -90,62 +89,82 @@ char *get_cmd_path(char *cmd, char **ev)
     if (!ev[i])
         return (NULL);
     paths = ft_split(ev[i] + 5, ':');
+    if (!paths)
+        return (NULL);
     i = 0;
     while (paths[i])
     {
-        part_path = ft_strjoin(paths[i], "/");
-        real_path = ft_strjoin(part_path, cmd);
-        free(part_path);
-        if (access(real_path, F_OK | R_OK) == 0)
+        part_path = ft_str_join(paths[i], "/");
+        if (!part_path)
+            break;
+
+        real_path = ft_str_join(part_path, cmd);
+        free(part_path);  
+        if (!real_path)
+            break;
+        if (access(real_path, F_OK) == 0)
         {
-              i = 0;
-              while (paths[i])
-              {
-                free(paths[i]);
-                i++;
-              }
-              free(paths);
-              printf("%s", real_path);
-              return (real_path);
+            // printf("%s", real_path);
+            return (real_path);
         }
         free(real_path);
         i++;
     }
-    i = 0;
-    while (paths[i])
-    {
-        free(paths[i]);
-        i++;
-    }
-    free(paths);
+    // while (paths[++i])
+	// 	free(paths[i]);
+	// free(paths);
     return (NULL);
 }
 
+
+
 void ft_execute_cmd(char *argv, char **ev)
 {
-    char **cmd;
-    char *path; 
-    int i;   
+    // char **cmd;
+    // char *path; 
+    // int i;   
 
-    i = 0;
-    cmd = ft_split(argv, ' ');
-    path = get_cmd_path(cmd[0], ev);
-    if (!path)
-    {
-        while (cmd[i])
-            free(cmd[i++]);
-        free(cmd);
-        ft_error("Error: cmd not found!!! ");
-    }
-    if (execve(path, cmd, ev) == -1)
-    {
-        free(path);
-        while (cmd[i])
-        {
-            free(cmd[i]);
-            i++;
-        }
-        free(cmd);
-        ft_error("Error: in the execute f the cmd");
-    }
+    // i = 0;
+    // cmd = ft_split(argv, ' ');
+    // if (!cmd || !cmd[0])  
+    // {
+    //     if (cmd)
+    //         free(cmd);
+    //     ft_error("Error: Invalid command!");
+    // }
+    // path = get_cmd_path(cmd[0], ev);
+    // if (!path)
+    // {
+    //     while (cmd[i])
+    //         free(cmd[i++]);
+    //     free(cmd);
+    //     ft_error("Error: cmd not found!!! ");
+    // }
+    // if (execve(path, cmd, ev) == -1)
+    // {
+    //     free(path);
+    //     while (cmd[i])
+    //     {
+    //         free(cmd[i]);
+    //         i++;
+    //     }
+    //     free(cmd);
+    //     ft_error("Error: in the execute f the cmd");
+    // }
+    char	**cmd;
+	int 	i;
+	char	*path;
+	
+	i = -1;
+	cmd = ft_split(argv, ' ');
+	path = get_cmd_path(cmd[0], ev);
+	if (!path)	
+	{
+		while (cmd[++i])
+			free(cmd[i]);
+		free(cmd);
+		//error();
+	}
+	if (execve(path, cmd, ev) == -1)
+		 ft_error("Error: in the execute f the cmd");
 }

@@ -5,12 +5,12 @@ SRC = ./mandatory/ft_error.c ./mandatory/ft_split.c ./mandatory/ft_strjoin.c \
 		./mandatory/pipex.c ./mandatory/pipex_help.c 
 
 SRC_BONUS = bonus/ft_error_bonus.c bonus/get_next_line_help.c bonus/get_next_line.c \
-			bonus/pipex_bonus_help.c bonus/pipex_bonus.c bonus/ft_split.c 
+			bonus/pipex_bonus_help.c bonus/pipex_bonus.c bonus/ft_split.c bonus/ft_strjoin.c \
 
 OBJS = ${SRC:.c=.o} 
 OBJS_BONUS = ${SRC_BONUS:.c=.o}
 CC = cc 
-CFLAGS = -Wall -Wextra -Werror 
+CFLAGS = -Wall -Wextra -Werror  -fsanitize=address
 RM = rm -rf 
 
 

@@ -6,7 +6,7 @@
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 19:31:21 by yhajji            #+#    #+#             */
-/*   Updated: 2025/03/04 02:58:58 by yhajji           ###   ########.fr       */
+/*   Updated: 2025/03/05 02:58:29 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void ft_error(char *str);
 void ft_execute_cmd(char *argv, char **ev);
 char	*get_next_line(int fd);
 char	*ft_strjoin(char *s1, char *s2);
+char	*ft_str_join(char *s1, char *s2);
 char	*ft_strdup(const char *s1);
 void	*ft_memcpy(void *dest, const void *src, size_t n);
 int	ft_strncmp(const char *s1, const char *s2, unsigned int n);
