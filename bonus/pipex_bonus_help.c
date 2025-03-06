@@ -6,7 +6,7 @@
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 23:16:22 by yhajji            #+#    #+#             */
-/*   Updated: 2025/03/05 02:58:37 by yhajji           ###   ########.fr       */
+/*   Updated: 2025/03/06 02:44:17 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ void ft_execute_cmd(char *argv, char **ev)
     //     free(cmd);
     //     ft_error("Error: cmd not found!!! ");
     // }
+    // fprintf(stderr, "Path to command: %s\n", path);
     // if (execve(path, cmd, ev) == -1)
     // {
     //     free(path);
