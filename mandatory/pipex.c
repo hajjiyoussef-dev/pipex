@@ -6,7 +6,7 @@
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 19:31:20 by yhajji            #+#    #+#             */
-/*   Updated: 2025/03/02 23:21:28 by yhajji           ###   ########.fr       */
+/*   Updated: 2025/03/06 13:51:42 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,9 @@ int main(int argc, char **argv, char **ev)
         if (pro_id2 == 0)
             ft_process_parent(argv, ev, fds);
         close(fds[0]);
-        close(fds[1]);           
+        close(fds[1]);
+        waitpid(pro_id1, NULL, 0);
+        waitpid(pro_id2, NULL, 0);       
     }
     else 
     {

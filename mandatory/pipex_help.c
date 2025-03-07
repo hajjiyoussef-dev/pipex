@@ -6,7 +6,7 @@
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 15:04:47 by yhajji            #+#    #+#             */
-/*   Updated: 2025/03/01 17:24:28 by yhajji           ###   ########.fr       */
+/*   Updated: 2025/03/06 14:53:46 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,12 @@ char *get_cmd_path(char *cmd, char **ev)
     char *part_path;
     char *real_path;
     
+    if (cmd[0] == '/' || cmd[0] == '.')
+    {
+        if (access(cmd, X_OK) == 0)
+            return (ft_strdup(cmd));
+        return(NULL);
+    }
     i = 0;
     while (ev[i] && ft_strnstr(ev[i], "PATH=", 5) == NULL)
         i++;
@@ -63,7 +69,6 @@ char *get_cmd_path(char *cmd, char **ev)
                 i++;
               }
               free(paths);
-              printf("%s", real_path);
               return (real_path);
         }
         free(real_path);
@@ -93,9 +98,11 @@ void ft_execute_cmd(char *argv, char **ev)
         while (cmd[i])
             free(cmd[i++]);
         free(cmd);
-        ft_error("Error: cmd not found!!! ");
+        ft_error("Error: cmd not found!!!\n");
     }
-    if (execve(path, cmd, ev) == -1)
+    int check = execve(path, cmd, ev) ;
+    check = -1;
+    if ( check == -1)
     {
         free(path);
         while (cmd[i])
