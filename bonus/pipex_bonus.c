@@ -6,7 +6,7 @@
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 19:31:06 by yhajji            #+#    #+#             */
-/*   Updated: 2025/03/06 08:05:45 by yhajji           ###   ########.fr       */
+/*   Updated: 2025/03/08 03:27:12 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,28 +26,14 @@ int ft_open_files(char *argv, int i)
     else if (i == 2)
         file_open = open(argv, O_RDONLY, 0777);
     if (file_open == -1)
-        ft_error("Error: filed to open file");
+        ft_print_error("Error: filed to open file");
     return (file_open);
 }
 
-int	ft_strncmp(const char *s1, const char *s2, unsigned int n)
-{
-	unsigned int	i;
-
-	i = 0;
-	if (n == 0)
-	{
-		return (0);
-	}
-	while (s1[i] && s2[i] && (s1[i] == s2[i]) && i < (n - 1))
-	{
-		i++;
-	}
-	return ((unsigned char )s1[i] - (unsigned char)s2[i]);
-}
 
 
-void ft_child_process(char *argv, char **ev)
+
+void ft_child_process(char *argv, char **ev, int out)
 {
     pid_t	pid;
 	int		p_fd[2];
@@ -61,12 +47,14 @@ void ft_child_process(char *argv, char **ev)
 	{
 		close(p_fd[0]);
 		dup2(p_fd[1], STDOUT_FILENO);
-		ft_execute_cmd(argv, ev);
+        close(p_fd[1]);
+		ft_execute_cmd(argv, ev, out);
 	}
 	else
 	{
 		close(p_fd[1]);
 		dup2(p_fd[0], STDIN_FILENO);
+        close(p_fd[0]);
 	}
 }
 
@@ -80,7 +68,6 @@ int main(int argc, char **argv, char **ev)
     {
         if (ft_strncmp(argv[1], "here_doc", 8) == 0)
         {
-            // fprintf( stderr, "hana-1");
             i = 3;
             out = ft_open_files(argv[argc - 1], 0);
             here_doc(argv[2], argc);
@@ -91,21 +78,18 @@ int main(int argc, char **argv, char **ev)
             out = ft_open_files(argv[argc - 1], 1);
             in = ft_open_files(argv[1], 2);
             dup2(in, STDIN_FILENO);
-            // close(in);
+            close(in);
         }
         while (i < argc - 2)
         {
-            ft_child_process(argv[i], ev);
+            ft_child_process(argv[i], ev, out);
             i++;
         }
-        // fprintf(stderr, "File descriptor: %d\n", out);
         dup2(out, STDOUT_FILENO);
-        // close(out);
-
-        // fprintf(stderr, "Executing final command: %s\n", argv[argc - 2]);
-        ft_execute_cmd(argv[argc - 2], ev);
-
-        // exit(1);
+        close(out);
+        ft_execute_cmd(argv[argc - 2], ev, out);
+        close(out);
+        exit(1);
     }
     else 
         ft_error("Error: Bad arguments\n\

@@ -6,12 +6,28 @@
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 23:16:22 by yhajji            #+#    #+#             */
-/*   Updated: 2025/03/06 02:44:17 by yhajji           ###   ########.fr       */
+/*   Updated: 2025/03/08 03:28:01 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
+
+int	ft_strncmp(const char *s1, const char *s2, unsigned int n)
+{
+	unsigned int	i;
+
+	i = 0;
+	if (n == 0)
+	{
+		return (0);
+	}
+	while (s1[i] && s2[i] && (s1[i] == s2[i]) && i < (n - 1))
+	{
+		i++;
+	}
+	return ((unsigned char )s1[i] - (unsigned char)s2[i]);
+}
 
 void here_doc(char *argv, int argc)
 {
@@ -21,7 +37,6 @@ void here_doc(char *argv, int argc)
 
     if (argc < 6)
         ft_error("./pipex_bonus here_doc <LIMITER> <cmd> <cmd1> <...> <file>\n");
-    
     if (pipe(fds) == -1)
         ft_error("Error: in the pipe");
     pro_id = fork();
@@ -35,6 +50,7 @@ void here_doc(char *argv, int argc)
             if(ft_strncmp(line, argv, ft_strlen(argv)) == 0 && line[ft_strlen(argv)] == '\n')
             {
                 free(line);
+                fprintf(stderr, "hannna1");
                 break;
             }
             write(fds[1], line, ft_strlen(line));
@@ -83,6 +99,12 @@ char *get_cmd_path(char *cmd, char **ev)
     char *part_path;
     char *real_path;
     
+     if (cmd[0] == '/' || cmd[0] == '.')
+    {
+        if (access(cmd, X_OK) == 0)
+            return (ft_strdup(cmd));
+        return(NULL);
+    }
     i = 0;
     while (ev[i] && ft_strnstr(ev[i], "PATH=", 5) == NULL)
         i++;
@@ -104,68 +126,60 @@ char *get_cmd_path(char *cmd, char **ev)
             break;
         if (access(real_path, F_OK) == 0)
         {
-            // printf("%s", real_path);
+            i = 0;
+            while (paths[i])
+            {
+                free(paths[i]);
+                i++;
+            }
+            free(paths);
             return (real_path);
         }
         free(real_path);
         i++;
     }
-    // while (paths[++i])
-	// 	free(paths[i]);
-	// free(paths);
+    i = -1;
+    while (paths[++i])
+		free(paths[i]);
+	free(paths);
     return (NULL);
 }
 
 
 
-void ft_execute_cmd(char *argv, char **ev)
+void ft_execute_cmd(char *argv, char **ev, int out)
 {
-    // char **cmd;
-    // char *path; 
-    // int i;   
+    char **cmd;
+    char *path; 
+    int i;   
 
-    // i = 0;
-    // cmd = ft_split(argv, ' ');
-    // if (!cmd || !cmd[0])  
-    // {
-    //     if (cmd)
-    //         free(cmd);
-    //     ft_error("Error: Invalid command!");
-    // }
-    // path = get_cmd_path(cmd[0], ev);
-    // if (!path)
-    // {
-    //     while (cmd[i])
-    //         free(cmd[i++]);
-    //     free(cmd);
-    //     ft_error("Error: cmd not found!!! ");
-    // }
-    // fprintf(stderr, "Path to command: %s\n", path);
-    // if (execve(path, cmd, ev) == -1)
-    // {
-    //     free(path);
-    //     while (cmd[i])
-    //     {
-    //         free(cmd[i]);
-    //         i++;
-    //     }
-    //     free(cmd);
-    //     ft_error("Error: in the execute f the cmd");
-    // }
-    char	**cmd;
-	int 	i;
-	char	*path;
-	
-	i = -1;
-	cmd = ft_split(argv, ' ');
-	path = get_cmd_path(cmd[0], ev);
-	if (!path)	
-	{
-		while (cmd[++i])
-			free(cmd[i]);
-		free(cmd);
-		//error();
-	}
-	if (execve(path, cmd, ev) == -1)
-		 ft_error("Error: in the execute f the cmd");
+   
+    cmd = ft_split(argv, ' ');
+    if (!cmd || !cmd[0])  
+    {
+        if (cmd)
+            free(cmd);
+        ft_error("Error: Invalid command!");
+    }
+    path = get_cmd_path(cmd[0], ev);
+    if (!path)
+    {
+        i = 0;
+        while (cmd[i])
+            free(cmd[i++]);
+        free(cmd);
+        close(out);
+        ft_error("Error: cmd not found!!! ");
+    }
+    if (execve(path, cmd, ev) == -1)
+    {
+        free(path);
+        while (cmd[i])
+        {
+            free(cmd[i]);
+            i++;
+        }
+        free(cmd);
+        ft_error("Error: in the execute f the cmd");
+    }
 }

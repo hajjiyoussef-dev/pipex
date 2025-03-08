@@ -6,7 +6,7 @@
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 19:31:21 by yhajji            #+#    #+#             */
-/*   Updated: 2025/03/05 02:58:29 by yhajji           ###   ########.fr       */
+/*   Updated: 2025/03/08 02:39:50 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,9 @@
 
 
 void ft_error(char *str);
+void ft_print_error(char *str);
 
-void ft_execute_cmd(char *argv, char **ev);
+void ft_execute_cmd(char *argv, char **ev, int out);
 char	*get_next_line(int fd);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_str_join(char *s1, char *s2);

@@ -6,7 +6,7 @@
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 19:31:20 by yhajji            #+#    #+#             */
-/*   Updated: 2025/03/06 13:51:42 by yhajji           ###   ########.fr       */
+/*   Updated: 2025/03/08 02:44:43 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,8 @@ void ft_process_child(char **argv, char **ev, int *fds)
     int in;
 
     in  = open(argv[1], O_RDONLY);
-    
     if (in == -1)
-        ft_error("Error, can not read from this file");
+        ft_error("Error, can not read from this file\n");
     dup2(in, STDIN_FILENO);
     dup2(fds[1], STDOUT_FILENO);
 

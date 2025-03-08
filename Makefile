@@ -10,7 +10,7 @@ SRC_BONUS = bonus/ft_error_bonus.c bonus/get_next_line_help.c bonus/get_next_lin
 OBJS = ${SRC:.c=.o} 
 OBJS_BONUS = ${SRC_BONUS:.c=.o}
 CC = cc 
-CFLAGS = -Wall -Wextra -Werror  -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror  #-fsanitize=address
 RM = rm -rf 
 
 
