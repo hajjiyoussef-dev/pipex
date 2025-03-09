@@ -6,7 +6,7 @@
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 23:16:22 by yhajji            #+#    #+#             */
-/*   Updated: 2025/03/08 03:28:01 by yhajji           ###   ########.fr       */
+/*   Updated: 2025/03/09 03:14:52 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	ft_strncmp(const char *s1, const char *s2, unsigned int n)
 	return ((unsigned char )s1[i] - (unsigned char)s2[i]);
 }
 
-void here_doc(char *argv, int argc)
+void here_doc(char *argv, int argc, int out)
 {
     int fds[2];
     pid_t pro_id;
@@ -45,18 +45,25 @@ void here_doc(char *argv, int argc)
     if (pro_id == 0)
     {
         close(fds[0]);
-        while ((line = get_next_line(STDIN_FILENO)))
+        // write(1,"pipe heredoc1>", 14);
+        while (1)
         {
-            if(ft_strncmp(line, argv, ft_strlen(argv)) == 0 && line[ft_strlen(argv)] == '\n')
+            write(1,"pipe heredoc2>", 14);
+            fflush(stdout);
+            if (get_next_line(&line) <= 0)
+                break;
+            if (ft_strlen(line) > 0 && line[ft_strlen(line) - 1] == '\n')
+                line[ft_strlen(line) - 1] = '\0';
+            if(ft_strncmp(line, argv, ft_strlen(argv) + 1) == 0)
             {
-                free(line);
-                fprintf(stderr, "hannna1");
+                // free(line);
                 break;
             }
             write(fds[1], line, ft_strlen(line));
-            free(line);
+            // free(line);
         }
         close(fds[1]);
+        close(out);
         exit(0);
     }
     else
