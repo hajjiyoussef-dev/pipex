@@ -6,7 +6,7 @@
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 15:04:47 by yhajji            #+#    #+#             */
-/*   Updated: 2025/03/07 21:48:21 by yhajji           ###   ########.fr       */
+/*   Updated: 2025/03/09 22:06:49 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ char *get_cmd_path(char *cmd, char **ev)
         part_path = ft_strjoin(paths[i], "/");
         real_path = ft_strjoin(part_path, cmd);
         free(part_path);
-        if (access(real_path, F_OK) == 0)
+        if (access(real_path, X_OK) == 0)
         {
               i = 0;
               while (paths[i])

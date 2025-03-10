@@ -6,7 +6,7 @@
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 23:16:22 by yhajji            #+#    #+#             */
-/*   Updated: 2025/03/09 03:14:52 by yhajji           ###   ########.fr       */
+/*   Updated: 2025/03/10 01:50:50 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,16 @@ void here_doc(char *argv, int argc, int out)
     int fds[2];
     pid_t pro_id;
     char *line;
+    int file_fd;
+    char buffer[4096];
+
 
     if (argc < 6)
         ft_error("./pipex_bonus here_doc <LIMITER> <cmd> <cmd1> <...> <file>\n");
+    
+    file_fd = open(".here_doc_tmp", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+    if (file_fd == -1)
+        ft_error("Error: Cannot create temporary file");
     if (pipe(fds) == -1)
         ft_error("Error: in the pipe");
     pro_id = fork();
@@ -45,13 +52,13 @@ void here_doc(char *argv, int argc, int out)
     if (pro_id == 0)
     {
         close(fds[0]);
-        // write(1,"pipe heredoc1>", 14);
         while (1)
         {
-            write(1,"pipe heredoc2>", 14);
+            write(1,"pipe heredoc> ", 14);
             fflush(stdout);
             if (get_next_line(&line) <= 0)
                 break;
+            // fprintf(stderr, "%s", line);
             if (ft_strlen(line) > 0 && line[ft_strlen(line) - 1] == '\n')
                 line[ft_strlen(line) - 1] = '\0';
             if(ft_strncmp(line, argv, ft_strlen(argv) + 1) == 0)
@@ -59,21 +66,36 @@ void here_doc(char *argv, int argc, int out)
                 // free(line);
                 break;
             }
+            // write(STDOUT_FILENO, line, ft_strlen(line));
             write(fds[1], line, ft_strlen(line));
+            // write(fds[1], "\n", 1);
+            close(out);
             // free(line);
         }
         close(fds[1]);
-        close(out);
+        // close(out);
         exit(0);
     }
     else
     {
         close(fds[1]);
+        ssize_t bytes_read;
+        
         dup2(fds[0], STDIN_FILENO);
-        close(fds[0]);
+        // Read data from pipe in chunks to prevent blocking
+        while ((bytes_read = read(fds[0], buffer, sizeof(buffer))) > 0)
+        { 
+            
+            write(fds[1], buffer, bytes_read);
+        }
+
+        close(fds[0]); // Close read end
         waitpid(pro_id, NULL, 0);
+        
     }
 }
+
+
 
 
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
