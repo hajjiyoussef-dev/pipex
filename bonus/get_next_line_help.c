@@ -6,7 +6,7 @@
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 17:39:14 by yhajji            #+#    #+#             */
-/*   Updated: 2025/03/03 17:39:36 by yhajji           ###   ########.fr       */
+/*   Updated: 2025/03/11 22:50:07 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,49 +46,53 @@ char	*ft_strdup(const char *s1)
 	return (ptr);
 }
 
-void	*ft_memcpy(void *dest, const void *src, size_t n)
+char	*ft_strncpy(char *dest, char const *src, unsigned int n)
 {
-	unsigned char	*d;
-	unsigned char	*s;
-	size_t			i;
+	unsigned int	i;
 
 	i = 0;
-	if (!dest || !src)
-		return (NULL);
-	d = (unsigned char *)dest;
-	s = (unsigned char *)src;
+	while (i < n && src[i] != '\0')
+	{
+		dest[i] = src[i];
+		i++;
+	}
 	while (i < n)
 	{
-		d[i] = s[i];
+		dest[i] = '\0';
 		i++;
 	}
 	return (dest);
 }
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_substr(char *s, unsigned int start, size_t len)
 {
-	size_t	lens;
 	size_t	i;
-	size_t	j;
-	char	*str;
+	char	*sub;
 
-	i = 0;
-	j = 0;
-	if (!s1 && !s2)
+	if (s == NULL)
 		return (NULL);
-	if (!s1)
-		return (ft_strdup(s2));
-	if (!s2)
-		return (ft_strdup(s1));
-	lens = ft_strlen(s1) + ft_strlen(s2);
-	str = (char *)malloc(lens + 1);
-	if (!str)
-		return (free(s1), NULL);
-	while (s1[j] != '\0')
-		str[i++] = s1[j++];
-	j = 0;
-	while (s2[j] != '\0')
-		str[i++] = s2[j++];
-	str[i] = '\0';
-	return (free(s1), str);
+	i = 0;
+	while (s[i])
+		i++;
+	if (i <= start)
+		return (ft_strdup(""));
+	if (start + len > i)
+		len = i - start;
+	sub = malloc(len + 1);
+	if (sub == NULL)
+		return (NULL);
+	ft_strncpy(sub, s + start, len);
+	sub[len] = '\0';
+	return (sub);
+}
+
+char	*ft_strchr(const char *s, int c)
+{
+	while (*s)
+	{
+		if (*s == (char)c)
+			return ((char *)s);
+		s++;
+	}
+	return (NULL);
 }

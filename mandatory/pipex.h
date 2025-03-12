@@ -6,7 +6,7 @@
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 19:31:33 by yhajji            #+#    #+#             */
-/*   Updated: 2025/03/06 13:52:22 by yhajji           ###   ########.fr       */
+/*   Updated: 2025/03/12 02:06:35 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include <sys/wait.h>
 
 
+void ft_print_error(char *str, int *fds);
 void ft_error(char *str);
 char	**ft_split(char const *s, char c);
 

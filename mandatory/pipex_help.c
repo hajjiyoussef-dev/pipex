@@ -6,11 +6,29 @@
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 15:04:47 by yhajji            #+#    #+#             */
-/*   Updated: 2025/03/09 22:06:49 by yhajji           ###   ########.fr       */
+/*   Updated: 2025/03/12 02:07:36 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+char	*ft_strchr(const char *s, int c)
+{
+	unsigned char	c1;
+
+	c1 = (unsigned char)c;
+	while (*s)
+	{
+		if (*s == c1)
+		{
+			return ((char *) s);
+		}
+		s++;
+	}
+	if (c1 == '\0')
+		return ((char *) s);
+	return (0);
+}
 
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
@@ -35,14 +53,14 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 	return (NULL);
 }
 
-char *get_cmd_path(char *cmd, char **ev)
+char *get_cmd_path(char *cmd, char **ev, char **cmds)
 {
     int i;
     char **paths;
     char *part_path;
     char *real_path;
     
-    if (cmd[0] == '/' || cmd[0] == '.')
+    if (ft_strchr(&cmd[0], '/'))
     {
         if (access(cmd, X_OK) == 0)
             return (ft_strdup(cmd));
@@ -54,6 +72,13 @@ char *get_cmd_path(char *cmd, char **ev)
     if (!ev[i])
         return (NULL);
     paths = ft_split(ev[i] + 5, ':');
+    if (!paths)
+    {
+        if (cmds)
+            free(cmds);
+        free(cmd);
+        ft_error("Error: in geting the pathe");
+    }
     i = 0;
     while (paths[i])
     {
@@ -98,7 +123,7 @@ void ft_execute_cmd(char *argv, char **ev)
             free(cmd);
         ft_error("Error: Invalid command!");
     }
-    path = get_cmd_path(cmd[0], ev);
+    path = get_cmd_path(cmd[0], ev, cmd);
     if (!path)
     {
         while (cmd[i])
@@ -115,6 +140,6 @@ void ft_execute_cmd(char *argv, char **ev)
             i++;
         }
         free(cmd);
-        ft_error("Error: in the execute f the cmd");
+        ft_error("Error: in the execute f the cmd\n");
     }
 }

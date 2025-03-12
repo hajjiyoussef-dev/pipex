@@ -6,7 +6,7 @@
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 23:16:22 by yhajji            #+#    #+#             */
-/*   Updated: 2025/03/11 02:41:54 by yhajji           ###   ########.fr       */
+/*   Updated: 2025/03/12 00:41:05 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,32 @@ int	ft_strncmp(const char *s1, const char *s2, unsigned int n)
 	return ((unsigned char )s1[i] - (unsigned char)s2[i]);
 }
 
+char *ft_create_file()
+{
+    char *num;
+    char *file_name;
+    pid_t pid;
+
+    pid = getpid(); 
+    num = ft_itoa(pid); 
+    file_name = ft_str_join("/tmp/.here_doc_", num); 
+    free(num);
+    return file_name;
+}
+
 void here_doc(char *argv, int argc, int out)
 {
     int fds[2];
     pid_t pro_id;
     char *line;
     int file_fd;
+    char *file_name;
     (void)out;
+
     if (argc < 6)
         ft_error("./pipex_bonus here_doc <LIMITER> <cmd> <cmd1> <...> <file>\n");
-    
-    file_fd = open("/tmp/.here_doc_tmp", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+    file_name = ft_create_file();
+    file_fd = open(file_name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
     if (file_fd == -1)
         ft_error("Error: Cannot create temporary file");
     if (pipe(fds) == -1)
@@ -50,31 +65,26 @@ void here_doc(char *argv, int argc, int out)
     if (pro_id == 0)
     {
         close(fds[0]);
-        while (1)
+        write(1, "pipe heredoc> ", 14);
+        fflush(stdout);
+        line = get_next_line(0);
+        while (line)
         {
-            // printf("DEBUG: Before prompt\n");
-            write(1, "pipe heredoc> ", 14);
-            fflush(stdout);
-            // printf("DEBUG: Before reading input\n"); 
-            if (get_next_line(&line) <= 0)
-            {
-                
-                break;
-            }
-            // printf("DEBUG: After reading input: %s\n", line);
             if (ft_strlen(line) > 0 && line[ft_strlen(line) - 1] == '\n')
             {
                 line[ft_strlen(line) - 1] = '\0';
             }
             if(ft_strncmp(line, argv, ft_strlen(argv) + 1) == 0)
             {
-
+                // free(line);
                 break;
             }
             write(file_fd, line, ft_strlen(line));
             write(file_fd, "\n", 1);
-            // free(line);
-            // line = NULL;
+            free(line);
+            write(1, "pipe heredoc> ", 14);
+            fflush(stdout);
+            line = get_next_line(0);
             // close(out);
         }
         close(file_fd);  // Close the file descriptor
@@ -86,12 +96,12 @@ void here_doc(char *argv, int argc, int out)
     {
         waitpid(pro_id, NULL, 0);
         close(fds[1]); 
-        file_fd = open("/tmp/.here_doc_tmp", O_RDONLY);
+        file_fd = open(file_name, O_RDONLY);
         if (file_fd == -1)
             ft_error("Error: Cannot open temporary file");
         dup2(file_fd, STDIN_FILENO);
         close(file_fd); 
-        unlink("/tmp/.here_doc_tmp");
+        unlink(file_name);
     }
 }
 
@@ -128,7 +138,7 @@ char *get_cmd_path(char *cmd, char **ev)
     char *part_path;
     char *real_path;
     
-     if (cmd[0] == '/' || cmd[0] == '.')
+    if (ft_strchr(&cmd[0], '/'))
     {
         if (access(cmd, X_OK) == 0)
             return (ft_strdup(cmd));

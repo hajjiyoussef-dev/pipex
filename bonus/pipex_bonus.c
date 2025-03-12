@@ -6,7 +6,7 @@
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 19:31:06 by yhajji            #+#    #+#             */
-/*   Updated: 2025/03/09 02:36:29 by yhajji           ###   ########.fr       */
+/*   Updated: 2025/03/12 03:22:10 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ int main(int argc, char **argv, char **ev)
         {
             i = 3;
             out = ft_open_files(argv[argc - 1], 0);
-            // fprintf(stderr, "%s", argv[2]);
             here_doc(argv[2], argc, out);
         }
         else 
@@ -92,7 +91,7 @@ int main(int argc, char **argv, char **ev)
         close(out);
         exit(1);
     }
-    else 
+    else
         ft_error("Error: Bad arguments\n\
             Ex: ./pipex <file1> <cmd1> <cmd2> <file2>");
     return (0);
