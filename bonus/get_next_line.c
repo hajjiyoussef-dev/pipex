@@ -6,7 +6,7 @@
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 17:24:16 by yhajji            #+#    #+#             */
-/*   Updated: 2025/03/12 03:21:44 by yhajji           ###   ########.fr       */
+/*   Updated: 2025/03/14 02:34:43 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,19 @@
 static char	*hnadle_eof(char **buffer, char *tmp)
 {
 	char	*line;
-	char	*tmp2;
 
-	tmp2 = *buffer;
-	if (*tmp2)
-		return (line = ft_strdup(*buffer), free(tmp),
-			free(*buffer), *buffer = NULL, line);
-	return (free(tmp), free(*buffer), *buffer = NULL, NULL);
+	if (*buffer && **buffer)
+	{
+		line = ft_strdup(*buffer);
+		free(tmp);
+		free(*buffer);
+		*buffer = NULL;
+		return (line);
+	}
+	free(tmp);
+	free(*buffer);
+	*buffer = NULL;
+	return (NULL);
 }
 
 static char	*ft_strrjoin(char *s1, char *s2)
@@ -97,8 +103,8 @@ char	*get_next_line(int fd)
 		if (!buffer)
 			return (free(temp), NULL);
 		if (ft_strchr(buffer, '\n'))
-			return (free(temp), handle_next_line
-				(&buffer, ft_strchr(buffer, '\n')));
+			return (free(temp), handle_next_line(&buffer, ft_strchr(buffer,
+						'\n')));
 		if (bytes_read == 0)
 			return (hnadle_eof(&buffer, temp));
 	}

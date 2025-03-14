@@ -6,12 +6,11 @@
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 15:29:00 by yhajji            #+#    #+#             */
-/*   Updated: 2025/03/01 15:29:03 by yhajji           ###   ########.fr       */
+/*   Updated: 2025/03/13 00:31:25 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
 
 size_t	ft_strlen(const char *s)
 {

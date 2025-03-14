@@ -12,7 +12,6 @@
 
 #include "pipex_bonus.h"
 
-
 static void	help_free(char **string, int i)
 {
 	while (i > 0)

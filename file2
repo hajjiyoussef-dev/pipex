@@ -1,12 +1,1 @@
-total 60
-drwxr-xr-x 6 yhajji 2024_khouribga   137 Mar 12 03:22 .
-drwxr-xr-x 4 yhajji 2024_khouribga    31 Mar  4 22:17 ..
-drwxr-xr-x 2 yhajji 2024_khouribga  4096 Mar 12 03:22 bonus
--rw-r--r-- 1 yhajji 2024_khouribga     4 Mar 11 21:44 file1
--rwxr-xr-x 1 yhajji 2024_khouribga     0 Mar 12 03:27 file2
-drwxr-xr-x 8 yhajji 2024_khouribga   185 Mar 11 02:42 .git
--rw-r--r-- 1 yhajji 2024_khouribga   892 Mar 12 02:06 Makefile
-drwxr-xr-x 2 yhajji 2024_khouribga   203 Mar 12 03:08 mandatory
--rwxr-xr-x 1 yhajji 2024_khouribga 21288 Mar 12 03:08 pipex
--rwxr-xr-x 1 yhajji 2024_khouribga 22192 Mar 12 03:22 pipex_bonus
-drwxr-xr-x 2 yhajji 2024_khouribga    27 Mar  6 14:49 .vscode
+mandatory

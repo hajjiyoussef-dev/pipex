@@ -6,12 +6,11 @@
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 17:06:29 by yhajji            #+#    #+#             */
-/*   Updated: 2025/02/27 17:07:06 by yhajji           ###   ########.fr       */
+/*   Updated: 2025/03/13 00:31:17 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
 
 static void	help_free(char **string, int i)
 {
