@@ -6,7 +6,7 @@
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 00:27:39 by yhajji            #+#    #+#             */
-/*   Updated: 2025/03/14 03:07:18 by yhajji           ###   ########.fr       */
+/*   Updated: 2025/03/15 17:56:47 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*ft_create_file(void)
 	char	*file_name;
 	pid_t	pid;
 
-	pid = getpid();
+	pid = getpid(); //remov
 	num = ft_itoa(pid);
 	file_name = ft_str_join("/tmp/.here_doc_", num);
 	free(num);
@@ -34,16 +34,26 @@ void	here_doc(char *argv, int argc, int out)
 	char	*file_name;
 
 	if (argc < 6)
+	{
+		close(out);
 		ft_error("./pipex_bonus here_doc <LIMITER> <cmd> <cmd1> <...> <file>\n");
+	}
 	file_name = ft_create_file();
 	file_fd = open(file_name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (file_fd == -1)
-		ft_error("Error: Cannot create temporary file");
-	if (pipe(fds) == -1)
+		ft_error("Error: Cannot create temporary file\n");
+	if (pipe(fds)== -1)
+	{
+		(close(file_fd), close(out), free(file_name));
 		ft_error("Error: in the pipe");
+	}
 	pro_id = fork();
 	if (pro_id == -1)
+	{
+		(close(file_fd), close(out), free(file_name));
+		(close(fds[0]), close(fds[1]));
 		ft_error("Error: in the fork");
+	}
 	if (pro_id == 0)
 	{
 		close(fds[0]);
@@ -65,6 +75,7 @@ void	here_doc(char *argv, int argc, int out)
 			write(1, "pipe heredoc> ", 14);
 			line = get_next_line(0);
 		}
+		get_next_line(-1);
 		close(file_fd);
 		close(fds[1]);
 		free(file_name);
@@ -75,6 +86,7 @@ void	here_doc(char *argv, int argc, int out)
 	{
 		waitpid(pro_id, NULL, 0);
 		close(fds[1]);
+		close(file_fd);
 		file_fd = open(file_name, O_RDONLY);
 		if (file_fd == -1)
 			ft_error("Error: Cannot open temporary file");
@@ -82,5 +94,6 @@ void	here_doc(char *argv, int argc, int out)
 		close(file_fd);
 		unlink(file_name);
 		free(file_name);
+		close(fds[0]);
 	}
 }

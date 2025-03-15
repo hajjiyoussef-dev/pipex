@@ -6,7 +6,7 @@
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 23:22:16 by yhajji            #+#    #+#             */
-/*   Updated: 2025/03/14 03:07:49 by yhajji           ###   ########.fr       */
+/*   Updated: 2025/03/15 17:49:04 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	ft_print_error(char *str)
 		write(2, &str[i], 1);
 		i++;
 	}
+	exit(1);
 }
 
 void	ft_error(char *str)
