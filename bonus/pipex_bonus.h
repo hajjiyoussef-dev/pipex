@@ -6,7 +6,7 @@
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 19:31:21 by yhajji            #+#    #+#             */
-/*   Updated: 2025/03/15 03:25:19 by yhajji           ###   ########.fr       */
+/*   Updated: 2025/03/16 22:59:27 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,10 @@
 
 # define BUFFER_SIZE 42
 
-// delete ???
-# include <stdio.h>
-
 # include <fcntl.h>
-# include <limits.h>
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <unistd.h>
-
 
 void	ft_error(char *str);
 void	ft_print_error(char *str);
@@ -43,5 +38,7 @@ char	*ft_itoa(int n);
 char	*ft_get_cmd_path_help(char *cmd, char **path);
 void	ft_free(char **paths);
 void	ft_free_strarr(char **arr);
+void	execute_commands(int argc, char **argv, char **ev, int *arr);
+void	ft_child_process(char *argv, char **ev, int out);
 
 #endif

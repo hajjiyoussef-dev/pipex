@@ -6,7 +6,7 @@
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 19:31:06 by yhajji            #+#    #+#             */
-/*   Updated: 2025/03/15 00:16:50 by yhajji           ###   ########.fr       */
+/*   Updated: 2025/03/16 22:57:40 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,39 +57,45 @@ void	ft_child_process(char *argv, char **ev, int out)
 	}
 }
 
-int	main(int argc, char **argv, char **ev)
+void	ft_handel_here_doc(char **argv, int argc, char **ev)
+{
+	int	i;
+	int	out;
+	int	arr[2];
+
+	i = 3;
+	out = ft_open_files(argv[argc - 1], 0);
+	here_doc(argv[2], argc, out);
+	arr[0] = out;
+	arr[1] = i;
+	execute_commands(argc, argv, ev, arr);
+}
+
+void	ft_handle_regular(char **argv, int argc, char **ev)
 {
 	int	i;
 	int	in;
 	int	out;
+	int	arr[2];
 
+	i = 2;
+	out = ft_open_files(argv[argc - 1], 1);
+	in = ft_open_files(argv[1], 2);
+	dup2(in, STDIN_FILENO);
+	close(in);
+	arr[0] = out;
+	arr[1] = i;
+	execute_commands(argc, argv, ev, arr);
+}
+
+int	main(int argc, char **argv, char **ev)
+{
 	if (argc >= 5)
 	{
 		if (ft_strncmp(argv[1], "here_doc", 8) == 0)
-		{
-			i = 3;
-			out = ft_open_files(argv[argc - 1], 0);
-			here_doc(argv[2], argc, out);
-		}
+			ft_handel_here_doc(argv, argc, ev);
 		else
-		{
-			i = 2;
-			out = ft_open_files(argv[argc - 1], 1);
-			in = ft_open_files(argv[1], 2);
-			dup2(in, STDIN_FILENO);
-			close(in);
-		}
-		// ft_is_the_child(argc, argv, out, ev, i);
-		while (i < argc - 2)
-		{
-			ft_child_process(argv[i], ev, out);
-			i++;
-		}
-		dup2(out, STDOUT_FILENO);
-		close(out);
-		ft_execute_cmd(argv[argc - 2], ev, out);
-		close(out);
-		exit(1);
+			ft_handle_regular(argv, argc, ev);
 	}
 	else
 		ft_error("Error: Bad arguments\n\

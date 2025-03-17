@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_bonus_help2.c                                :+:      :+:    :+:   */
+/*   pipex_help2_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 00:36:08 by yhajji            #+#    #+#             */
-/*   Updated: 2025/03/14 03:07:35 by yhajji           ###   ########.fr       */
+/*   Updated: 2025/03/16 22:58:01 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,21 @@ void	ft_free_strarr(char **arr)
 	while (arr[i])
 		free(arr[i++]);
 	free(arr);
+}
+
+void	execute_commands(int argc, char **argv, char **ev, int *arr)
+{
+	int	i;
+
+	i = arr[1];
+	while (i < argc - 2)
+	{
+		ft_child_process(argv[i], ev, arr[0]);
+		i++;
+	}
+	dup2(arr[0], STDOUT_FILENO);
+	close(arr[0]);
+	ft_execute_cmd(argv[argc - 2], ev, arr[0]);
+	close(arr[0]);
+	exit(1);
 }

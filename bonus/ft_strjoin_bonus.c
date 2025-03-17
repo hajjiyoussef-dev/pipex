@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_help.c                               :+:      :+:    :+:   */
+/*   ft_strjoin_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/03 17:39:14 by yhajji            #+#    #+#             */
-/*   Updated: 2025/03/11 22:50:07 by yhajji           ###   ########.fr       */
+/*   Created: 2025/03/05 02:57:57 by yhajji            #+#    #+#             */
+/*   Updated: 2025/03/16 22:57:13 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-size_t	ft_strlen(const char *s)
+size_t	ft_str_len(const char *s)
 {
 	int	i;
 
@@ -26,7 +26,7 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-char	*ft_strdup(const char *s1)
+char	*ft_str_dup(const char *s1)
 {
 	char	*ptr;
 	size_t	i;
@@ -46,53 +46,30 @@ char	*ft_strdup(const char *s1)
 	return (ptr);
 }
 
-char	*ft_strncpy(char *dest, char const *src, unsigned int n)
+char	*ft_str_join(char *s1, char *s2)
 {
-	unsigned int	i;
-
-	i = 0;
-	while (i < n && src[i] != '\0')
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	while (i < n)
-	{
-		dest[i] = '\0';
-		i++;
-	}
-	return (dest);
-}
-
-char	*ft_substr(char *s, unsigned int start, size_t len)
-{
+	size_t	lens;
 	size_t	i;
-	char	*sub;
+	size_t	j;
+	char	*str;
 
-	if (s == NULL)
-		return (NULL);
 	i = 0;
-	while (s[i])
-		i++;
-	if (i <= start)
-		return (ft_strdup(""));
-	if (start + len > i)
-		len = i - start;
-	sub = malloc(len + 1);
-	if (sub == NULL)
+	j = 0;
+	if (!s1 && !s2)
 		return (NULL);
-	ft_strncpy(sub, s + start, len);
-	sub[len] = '\0';
-	return (sub);
-}
-
-char	*ft_strchr(const char *s, int c)
-{
-	while (*s)
-	{
-		if (*s == (char)c)
-			return ((char *)s);
-		s++;
-	}
-	return (NULL);
+	if (!s1)
+		return (ft_str_dup(s2));
+	if (!s2)
+		return (ft_str_dup(s1));
+	lens = ft_strlen(s1) + ft_str_len(s2);
+	str = (char *)malloc(lens + 1);
+	if (!str)
+		return (free(s1), NULL);
+	while (s1[j] != '\0')
+		str[i++] = s1[j++];
+	j = 0;
+	while (s2[j] != '\0')
+		str[i++] = s2[j++];
+	str[i] = '\0';
+	return (str);
 }

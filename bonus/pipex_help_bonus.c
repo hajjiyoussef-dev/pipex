@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_bonus_help.c                                 :+:      :+:    :+:   */
+/*   pipex_help_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yhajji <yhajji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 23:16:22 by yhajji            #+#    #+#             */
-/*   Updated: 2025/03/14 03:41:32 by yhajji           ###   ########.fr       */
+/*   Updated: 2025/03/16 22:57:55 by yhajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ char	*get_cmd_path(char *cmd, char **ev, char **cmds)
 		if (cmds)
 			free(cmds);
 		free(cmd);
-		ft_error("Error: in geting the pathe");
+		ft_error("Error: in geting the pathe\n");
 	}
 	result = ft_get_cmd_path_help(cmd, paths);
 	if (!result)
@@ -90,8 +90,7 @@ void	ft_execute_cmd(char *argv, char **ev, int out)
 	{
 		if (cmd)
 			free(cmd);
-		close(out);
-		ft_error("Error: Invalid command!");
+		(close(out), ft_error("Error: Invalid command!\n"));
 	}
 	path = get_cmd_path(cmd[0], ev, cmd);
 	if (!path)
