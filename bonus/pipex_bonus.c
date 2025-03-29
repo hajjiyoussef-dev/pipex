@@ -92,7 +92,7 @@ int	main(int argc, char **argv, char **ev)
 {
 	if (argc >= 5)
 	{
-		if (ft_strncmp(argv[1], "here_doc", 8) == 0)
+		if (ft_strncmp(argv[1], "here_doc", ft_strlen(argv[1]) == 0)
 			ft_handel_here_doc(argv, argc, ev);
 		else
 			ft_handle_regular(argv, argc, ev);
